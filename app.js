@@ -29,14 +29,14 @@ app.use(session({
 
 app.post('/', function(req, res) {
     var fstream;
-    var dirname = __dirname + '/uploads/' + Date.now();
+    var dirname = __dirname + '/uploads/unprocessed/' + Date.now();
 
     req.pipe(req.busboy);
 
     console.log("------------------ New recording ------------------");
 
     fs.mkdirs(dirname, function(err) {
-        if (err) return console.log(' ----- ERROR IN DIRECTORY CREATION: ', err)
+            if (err) return console.log(' ----- ERROR IN DIRECTORY CREATION: ', err);
             console.log("  -- Made directory: ", dirname);
         });
 
@@ -44,15 +44,15 @@ app.post('/', function(req, res) {
         if (key === "filename") {
             var recording_path = dirname + '/' + value + '.ogg';
             fs.ensureFile(recording_path, function(err) {
-                console.log(' ----- ERROR IN FILE CREATION: ', err);
+                if (err) return console.log(' ----- ERROR IN FILE CREATION: ', err);
+                console.log("  -- Created empty file: ", recording_path);
             });
-            console.log("  -- Created empty file: ", recording_path);
         }
         else if (key === "message") {
             fs.outputFile(dirname + '/message.txt', value, function(err) {
-                console.log(' ----- ERROR WRITING MESSAGE TO FILE: ', err)
+                if (err) return console.log(' ----- ERROR WRITING MESSAGE TO FILE: ', err);
+                console.log("  -- Wrote message.");
             });
-            console.log(" -- Wrote message.");
         }
     });
 
