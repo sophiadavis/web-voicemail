@@ -51,6 +51,10 @@ app.get('/client.js', function(req, res) {
     res.sendFile(clientjs);
 });
 
+app.get('/you_asked_for_it', function(req, res) {
+    res.render('rick')
+})
+
 
 var server = app.listen(3000, function () {
 

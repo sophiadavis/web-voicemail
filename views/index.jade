@@ -1,12 +1,25 @@
 html
   head
-    title!= title
+    link(href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css', rel='stylesheet')
+    title Geekville
   body
-    message!= message
+    .container-fluid
+        .lead Welcome to Geekville!
+        if message
+          p.strong.bg-success!= message
+        .jumbotron
+            form(action="/", method="post", enctype="multipart/form-data").form-horizontal
+              .form-group
+                  .col-sm-2: label Name your recording:
+                  .col-sm-4: input(type="text", name="filename", placeholder="Filename").form-control.input-lg
+              .form-group
+                  .col-sm-2: label Select a recording:
+                  .col-sm-4: input(type="file", name="file", accept="audio/*;capture=microphone").input-lg
+              .form-group
+                  .col-sm-2: label Attach a message:
+                  .col-sm-10: textarea(name="message", value="Attach a message", placeholder="Message for Ben and Sophia", rows="3").form-control.input-lg
+                .row: .col-sm-offset-2: input(type="submit", value="Submit").btn.btn-lg.btn-primary
 
-    |<form action="/" method="post" enctype="multipart/form-data">
-    |       <input type="file" name="filename" accept="audio/*;capture=microphone">
-    |       <input type="submit" value="Submit">
-    |</form>
-    |<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    |<script src="client.js"></script>
+        a(href="/you_asked_for_it").btn.btn-danger.btn-lg.btn-block Press the button?
+
+    script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
