@@ -29,14 +29,39 @@ app.use(session({
 
 app.post('/', function(req, res) {
     var fstream;
-    req.pipe(req.busboy);
-    req.busboy.on('file', function (fieldname, file, filename) {
+    var dirname = __dirname + '/uploads/' + Date.now();
 
-        fstream = fs.createWriteStream(__dirname + '/uploads/' + filename);
+    req.pipe(req.busboy);
+
+    console.log("------------------ New recording ------------------");
+
+    fs.mkdirs(dirname, function(err) {
+        if (err) return console.log(' ----- ERROR IN DIRECTORY CREATION: ', err)
+            console.log("  -- Made directory: ", dirname);
+        });
+
+    req.busboy.on('field', function(key, value, keyTruncated, valueTruncated) {
+        if (key === "filename") {
+            var recording_path = dirname + '/' + value + '.ogg';
+            fs.ensureFile(recording_path, function(err) {
+                console.log(' ----- ERROR IN FILE CREATION: ', err);
+            });
+            console.log("  -- Created empty file: ", recording_path);
+        }
+        else if (key === "message") {
+            fs.outputFile(dirname + '/message.txt', value, function(err) {
+                console.log(' ----- ERROR WRITING MESSAGE TO FILE: ', err)
+            });
+            console.log(" -- Wrote message.");
+        }
+    });
+
+    req.busboy.on('file', function (fieldname, file, filename) {
+        fstream = fs.createWriteStream(dirname + '/' + filename);
         file.pipe(fstream);
         fstream.on('close', function () {
-            console.log("Finished uploading " + filename);
-            req.flash('info', 'it worked');
+            console.log(" -- Finished upload.");
+            req.flash('info', 'Got it!');
             res.redirect('/');
         });
     });
