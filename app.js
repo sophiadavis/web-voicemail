@@ -1,10 +1,13 @@
 // Authentication module -- https://github.com/gevorg/http-auth
 var auth = require('http-auth');
+var busboy = require('connect-busboy');
+var cookieParser = require('cookie-parser');
 var express = require('express');
+var flash = require('connect-flash');
 var fs = require('fs-extra');
 var http = require('http');
 var path = require('path');
-var busboy = require('connect-busboy');
+var session = require('express-session');
 
 var basic = auth.basic({
     realm: "Simon Area.", // wtf
@@ -12,8 +15,16 @@ var basic = auth.basic({
 });
 
 var app = express();
-app.use(busboy());
 app.use(auth.connect(basic));
+app.use(busboy());
+app.use(cookieParser('secret'));
+app.use(require('express-jquery')('/jquery.js'));
+app.use(session({
+            secret: "cookie_secret",
+            // cookie: { maxAge: 60000 },
+            resave: false,
+            saveUninitialized: false}));
+            app.use(flash());
 
 app.post('/', function(req, res) {
     var fstream;
@@ -21,11 +32,16 @@ app.post('/', function(req, res) {
     req.busboy.on('file', function (fieldname, file, filename) {
 
         //Path where image will be uploaded
-        fstream = fs.createWriteStream(__dirname + '/' + filename);
+        fstream = fs.createWriteStream(__dirname + '/uploads/' + filename);
         file.pipe(fstream);
         fstream.on('close', function () {
             console.log("Finished uploading " + filename);
+            req.flash('info', 'it worked');
+            console.log(req.flash('info'));
+            // var str = $("div#the-flash-box").text();
+            console.log(str);
             res.redirect('back');
+            // res.render('index', { messages: req.flash('info') });
         });
     });
 });
