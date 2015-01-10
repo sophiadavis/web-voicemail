@@ -2,4 +2,4 @@ uploads/*
 node_modules/*
 passwds.txt
 get_audio.js
-views/old_jade.jade
+old_jade.jade
