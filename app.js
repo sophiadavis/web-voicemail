@@ -69,19 +69,36 @@ app.post('/', function(req, res) {
 
 app.get('/', function (req, res) {
     res.render('index', {message: req.flash('info')});
-})
+});
 
 app.get('/you_asked_for_it', function(req, res) {
     res.render('rick')
-})
+});
 
 // get pi an ssh key
 // pi sends correct username and password in http request
 // this method will return a list of the subdirs that have been processed
 // pi will scp them to itself
-// app.get('/processed', function(req, res) {
-//
-// })
+// app.param('timestamp', /\w+/);
+app.param(function(name, fn){
+    if (fn instanceof RegExp) {
+        return function(req, res, next, val){
+            var captures;
+            if (captures = fn.exec(String(val))) {
+                req.params[name] = captures;
+                next();
+            } else {
+                next('route');
+            }
+        }
+    }
+});
+app.param('timestamp', /^\d+$/);
+app.get(/\/processed\/(\w+)/, function(req, res) {
+    console.log(req.params[0]);
+// app.get('/processed/:timestamp', function(req, res) {
+    // console.log(req.params.timestamp);
+})
 
 // when pi has successfully scp'd subdir, it will send request with param of timestamp saved
 // we can then transfer the subdir to a 'transferred' subdir
