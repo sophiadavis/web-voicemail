@@ -71,14 +71,23 @@ app.get('/', function (req, res) {
     res.render('index', {message: req.flash('info')});
 })
 
-app.get('/client.js', function(req, res) {
-    var clientjs = path.join(__dirname, 'public', 'client.js');
-    res.sendFile(clientjs);
-});
-
 app.get('/you_asked_for_it', function(req, res) {
     res.render('rick')
 })
+
+// get pi an ssh key
+// pi sends correct username and password in http request
+// this method will return a list of the subdirs that have been processed
+// pi will scp them to itself
+// app.get('/processed', function(req, res) {
+//
+// })
+
+// when pi has successfully scp'd subdir, it will send request with param of timestamp saved
+// we can then transfer the subdir to a 'transferred' subdir
+// app.get('/transferred', function(req, res)) {
+//
+// })
 
 
 var server = app.listen(3000, function () {
