@@ -1,0 +1,15 @@
+#### example values for important environment variables
+
+# app.js
+export SECRET_FILE='/passwds.txt'
+
+# scp_new_recordings.py
+export BASE_URL='http://localhost:3000'
+export USERNAME='pi'
+export HOST='192.168.1.20'
+export TARGET_DIR='~/'
+export AUTH_USERNAME='user'
+export AUTH_PASSWORD='pass'
+
+# create correct directory structure
+mkdir uploads && mkdir uploads/processed && mkdir uploads/unprocessed && mkdir uploads/transferred
