@@ -50,7 +50,7 @@ app.post('/', function(req, res) {
 
     req.busboy.on('field', function(key, value, keyTruncated, valueTruncated) {
         if (key === 'filename') {
-            var recording_path = dirname + '/' + value + '.ogg';
+            var recording_path = dirname + '/' + value.replace(/ /g, '_') + '.ogg';
             fs.ensureFile(recording_path, function(err) {
                 if (err) return console.log(' ----- ERROR IN FILE CREATION: ', err);
                 console.log('  -- Created empty file: ', recording_path);
