@@ -6,6 +6,7 @@ from requests.auth import HTTPBasicAuth
 import subprocess
 
 BASE_URL = os.environ['BASE_URL']
+PORT = os.environ['PORT']
 USERNAME = os.environ['USERNAME']
 HOST = os.environ['HOST']
 TARGET_DIR = os.environ['TARGET_DIR']
@@ -14,7 +15,7 @@ AUTH_PASSWORD = os.environ['AUTH_PASSWORD']
 
 def scp_dir_from_server(path):
     local_dir = os.path.split(path)[1]
-    command = 'scp -r %s@%s:%s %s%s' % (USERNAME, HOST, path, TARGET_DIR, local_dir)
+    command = 'scp -r %s %s@%s:%s %s%s' % (PORT, USERNAME, HOST, path, TARGET_DIR, local_dir)
     # scp -r pi@192.168.1.20:/home/pi/example ~/Projects/example
     # subprocess.check_call(command.split())
     print '  --- Successfully executed command: '

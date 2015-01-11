@@ -5,6 +5,7 @@ export SECRET_FILE='/passwds.txt'
 
 # scp_new_recordings.py
 export BASE_URL='http://localhost:3000'
+export PORT='-p 22'
 export USERNAME='pi'
 export HOST='192.168.1.20'
 export TARGET_DIR='~/'
