@@ -11,8 +11,8 @@ var path = require('path');
 var session = require('express-session');
 
 var basic = auth.basic({
-    realm: "Simon Area.", // wtf
-    file: __dirname + "/passwds.txt"
+    // realm: '', // wtf Simon Area.
+    file: __dirname + '/passwds.txt'
 });
 
 var app = express();
@@ -27,6 +27,7 @@ app.use(session({
             resave: false,
             saveUninitialized: false}));
             app.use(flash());
+
 
 app.post('/', function(req, res) {
     console.log('\n------------------ POST / ------------------');
@@ -74,20 +75,19 @@ app.post('/', function(req, res) {
     });
 });
 
+
 app.get('/', function (req, res) {
     console.log('\n------------------ GET / ------------------');
     res.render('index', {message: req.flash('info')});
 });
+
 
 app.get('/you_asked_for_it', function(req, res) {
     console.log('\n------------------ GET RICK ------------------');
     res.render('rick')
 });
 
-// get pi an ssh key
-// pi sends correct username and password in http request
-// this method will return a list of the subdirs that have been processed
-// pi will scp them to itself
+
 app.get('/processed', function(req, res) {
     console.log('\n------------------ GET /processed ------------------');
 
@@ -100,6 +100,7 @@ app.get('/processed', function(req, res) {
         res.json(JSON.stringify(files_with_abs_path));
     });
 });
+
 
 app.get(/\/transferred\/(\w+)/, function(req, res) {
     console.log('\n------------------ GET /transferred ------------------');
