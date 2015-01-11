@@ -12,7 +12,7 @@ var session = require('express-session');
 
 var basic = auth.basic({
     // realm: '', // wtf Simon Area.
-    file: __dirname + '/passwds.txt'
+    file: __dirname + process.env.SECRET_FILE
 });
 
 var app = express();
@@ -31,7 +31,7 @@ app.use(session({
 
 app.post('/', function(req, res) {
     console.log('\n------------------ POST / ------------------');
-    console.log('------------------ New recording from ', req.user, ' ------------------');
+    console.log('------------------ New recording from ', req.user);
 
     var fstream;
     var dirname = __dirname + '/uploads/unprocessed/' + Date.now();
