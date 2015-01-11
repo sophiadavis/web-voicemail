@@ -3,3 +3,4 @@ node_modules/*
 passwds.txt
 get_audio.js
 old_jade.jade
+public.client.js
