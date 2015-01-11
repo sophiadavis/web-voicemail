@@ -29,6 +29,8 @@ def convert_recording_to_ogg(path):
         command = command % (path_to_mov, path_to_ogg)
         args = command.split()
         subprocess.check_call(args)
+    else:
+        print '   ---- Failed to convert %s. MOV or OGG files missing.'
 
 
 def get_file_matching_path_or_none(path):
